@@ -10,16 +10,18 @@ def introScene():
   while userInput not in directions:
     print("Options: left/right/backward/forward")
     userInput = input()
-    if userInput == "left":
-      showEyes()
-    elif userInput == "right":
-      showFigure()
-    elif userInput == "forward":
-      emptyRoom()
-    elif userInput == "backward":
-      bedroom()
-    else:
-      print("You're standing still. You can't make your body move.")
+    match input:
+      case "left":
+        showEyes()
+      case "right":
+        showFigure()
+      case "forward":
+        emptyRoom()
+      case "backward":
+        bedroom()
+      case other:
+        print("You're standing still. You can't make your body move.")
+        break
 
 def returnScene():
   directions = ["yes", "no"]
@@ -31,13 +33,15 @@ def returnScene():
   while userInput not in directions:
     print("yes/no")
     userInput = input()
-    if userInput == "yes":
-      bedroom()
-    elif userInput == "no":
-      print("Alright then. I'll help you back.")
-      introScene()
-    else:
-      print("You have to make a choice. Yes or no.")
+    match input:
+      case 'yes':
+        bedroom()
+      case 'no':
+        print("Alright then. I'll help you back.")
+        introScene()
+      case other:
+        print("You must make a choice. Yes or no.")
+
 
 def showEyes():
     directions = ["right", "backward"]
@@ -49,14 +53,15 @@ def showEyes():
     while userInput not in directions:
       print("Options: right/left/backwards")
       userInput = input()
-    if userInput == "backwards":
+    match input:
+      case 'backwards':
         returnScene()
-    elif userInput == "right":
+      case 'right':
         woods()
-    elif userInput == "left":
-     print("You can't go there. Something is blocking your path.")
-    else:
-      print("Something hinders your movement. Try going somewhere else.")
+      case 'left':
+        print("You can't go there. Something is blocking your path.")
+      case other:
+        print("Something hinders your movement. Try something else.")
 
 def showFigure():
   print("There's someone else here.")
@@ -65,52 +70,56 @@ def showFigure():
   print("What do you wish to do?")
   userInput = ""
   while userInput not in action:
-    print("Options: Leave/Ignore/Fight")
-    userInput = input()
-    if userInput == "Leave":
-      returnScene()
-    elif userInput == "Ignore":
-      directions: ["left", "downwards"]
-      print("You decide to ignore it.")
-      userInput = ""
-      while userInput not in directions:
-        print("Options: left/downwards")
-        if userInput == "left":
-          recovery()
-        elif userInput == "downwards":
-          water()
-        else: print("Your body isn't moving. Try something else.")
-    elif userInput == "Fight":
-      actions = ["Return","Lay down", "Kill yourself"]
-      if weapon:
-        print("You stab the figure with all your might.")
+    match input:
+      case 'Leave':
+        returnScene()
+      case 'Ignore':
+        directions: ["left", "downwards"]
+        print("You decide to ignore it.")
+        userInput = ""
+        while userInput not in directions:
+          print("Options: left/downwards")
+          match input:
+            case 'left':
+              recovery()
+            case 'downwards':
+              water()
+            case other:
+              print("Your body isn't moving. Try something else.")
+      case 'Fight':
+        actions = ["Return","Lay Down","Kill yourself"]
+        if weapon:
+           print("You stab the figure with all your might.")
         time.sleep(2)
         print("The sound of it's limp body hitting the floor echoes in your head.")
         time.sleep(2)
         print("What will you do now?")
         while userInput not in actions:
-          print("Options: Leave/Lay down/ Kill yourself")
-          if userInput == "Leave":
-            returnScene()
-          elif userInput == "Lay down":
-            print("You lay down next to the figure.")
-            time.sleep(3)
-            print("The corpse is laying in its own blood. You can feel it seeping into your clothes.")
-            time.sleep(3)
-            print("...")
-            print("Guilt overcomes you.")
-            print("You decide to lay there until you also pass away.")
-            quit()
-          elif userInput == "Kill yourself":
-            print("You stare into the dark room, your eyes landing on the figure.")
-            time.sleep(3)
-            print("The air becomes thick. It's hard to breathe.")
-            time.sleep(2)
-            print("To end your own suffering you stab yourself in the neck.")
-            quit()
-          else:
-            print("You have to do something. Don't just stand there.")
-      else: 
+            print("Options: Leave/Lay down/ Kill yourself")
+            match input:
+              case 'Leave':
+                returnScene()
+              case 'Lay down':
+                print("You lay down next to the figure.")
+                time.sleep(3)
+                print("The corpse is laying in its own blood. You can feel it seeping into your clothes.")
+                time.sleep(3)
+                print("...")
+                print("Guilt overcomes you.")
+                print("You decide to lay there until you also pass away.")
+                quit()
+              case 'Kill yourself':
+                print("You stare into the dark room, your eyes landing on the figure.")
+                time.sleep(3)
+                print("The air becomes thick. It's hard to breathe.")
+                time.sleep(2)
+                print("To end your own suffering you stab yourself in the neck.")
+                quit()
+              case other:
+                print("You have to do something.")
+        else:
+          print("You have to do something")
+      case other:
         print("You decide to back out of this. You don't actually want to fight it.")
         time.sleep(1)
         print("Just as you're about to turn around to leave you feel your ribs splitting open.")
@@ -119,11 +128,22 @@ def showFigure():
         print("Your torso tears open in front of your eyes. You don't even have the chance to scream.")
         print("I told you this was a bad idea.")
         quit()
-    else:
-      print("you have to do something. Try again.")
 
 def emptyRoom():
+  directions = ["right/forwards/backwards"]
   print("When you enter the room you start hearing your own heartbeat. It's eerily silent.")
+  userInput = ""
+  while userInput not in directions:
+    match input:
+      case 'right':
+        introScene()
+      case 'forwards':
+        recovery()
+      case 'backwards':
+        woods()
+      case other:
+        print("You can't move. Try something else.")
+
 def bedroom():
     print("You're in your room. The bed hasn't been made in months.")
 def recovery():
@@ -138,9 +158,10 @@ def water():
   while userInput not in actions:
     print("Options: Touch the water/Step in/Return")
     userInput = input()
-    if userInput == "Touch the water":
-      key = True
-      print("You feel something touching your fingertips as you reach into the blank surface of the water.")
+    match input:
+      case 'Touch the water':
+        key = True
+        print("You feel something touching your fingertips as you reach into the blank surface of the water.")
     
     
 def woods():
@@ -154,15 +175,16 @@ def woods():
   while userInput not in directions:
     print("Options: right/backwards/forward")
     userInput = input()
-    if userInput == "backwards":
-      showEyes()
-    elif userInput == "right":
-      emptyRoom()
-    elif userInput == "forward":
-      print("You see something reflecting the moonlight. It looks like a knife. You decide to take it.")
-      weapon = True
-    else:
-      print("You feel like you're stuck in place. Try something else.")
+    match input:
+      case 'backwards':
+        showEyes()
+      case 'right':
+        emptyRoom()
+      case 'forward':
+        print("You see something reflecting the moonlight. It looks like a knife. You decide to take it.")
+        weapon = True
+      case other:
+        print("You feel like you're stuck in place. Try something else.")
   
 if __name__ == "__main__":
   while True:
@@ -170,14 +192,15 @@ if __name__ == "__main__":
     print("It has been a while since you last stepped foot outside the door.")
     print("Are you sure you're ready?")
     print("Maybe you should turn back while you still can.")
-    time.sleep(3)
+    time.sleep(1)
     print("...")
-    time.sleep(3)
+    time.sleep(1)
     print("Oh?")
     print("Well, if you insist.")
     print("Remind me of your name again: ")
     name = input()
     print("Good luck, " +name+ ". I hope you realize I'm just trying to do what's best for you.")
     introScene()
+    
 else:
-  introScene()
+  returnScene()
